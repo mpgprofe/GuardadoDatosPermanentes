@@ -2,19 +2,22 @@ package com.example.guardadodatospermanentes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class MainActivity extends AppCompatActivity implements DialogoHora.CuandoEsteSeleccionadaLaHora, DialogoFecha.CuandoSeleccioneLaFecha {
+public class MainActivity extends AppCompatActivity implements
+        DialogoHora.CuandoEsteSeleccionadaLaHora, DialogoFecha.CuandoSeleccioneLaFecha {
     private static final String EDAD = "EDAD";
-    Button guardar, cargar, borrar, botonHora, botonFecha;
+    Button guardar, cargar, borrar, botonHora, botonFecha, botonFecha2;
     EditText nombre, edad;
     TextView textViewHora, textViewFecha;
     static final String NOMBRE_FICHERO = "DATOS";
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements DialogoHora.Cuand
         textViewHora = findViewById(R.id.textViewHora);
         botonFecha = findViewById(R.id.buttonFecha);
         textViewFecha = findViewById(R.id.textViewFecha);
+        botonFecha2 = findViewById(R.id.buttonFecha2);
 
 
         guardar.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +83,24 @@ public class MainActivity extends AppCompatActivity implements DialogoHora.Cuand
                 dialogoFecha.show(getSupportFragmentManager(), "Mi Ventana para Fecha");
             }
         });
+        botonFecha2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendario = Calendar.getInstance();
+                int año = calendario.get(Calendar.YEAR);
+                int mes = calendario.get(Calendar.MONTH);
+                int día = calendario.get(Calendar.DAY_OF_MONTH);
+
+                new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int año, int mes, int dia) {
+                        textViewFecha.setText(dia + "/" + mes + "/" + año);
+
+                    }
+                },año, mes, día).show();
+
+            }
+        });
 
     }
 
@@ -90,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements DialogoHora.Cuand
 
     @Override
     public void fechaSeleccionada(GregorianCalendar fecha) {
-        textViewFecha.setText(fecha.get(Calendar.DAY_OF_MONTH)+"/"+fecha.get(Calendar.MONTH)+"/"+fecha.get(Calendar.YEAR));
+        textViewFecha.setText(fecha.get(Calendar.DAY_OF_MONTH) + "/" + fecha.get(Calendar.MONTH) + "/" + fecha.get(Calendar.YEAR));
     }
+
+
 }
