@@ -9,13 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class MainActivity extends AppCompatActivity implements DialogoHora.CuandoEsteSeleccionadaLaHora {
+public class MainActivity extends AppCompatActivity implements DialogoHora.CuandoEsteSeleccionadaLaHora, DialogoFecha.CuandoSeleccioneLaFecha {
     private static final String EDAD = "EDAD";
-    Button guardar, cargar, borrar, botonHora;
+    Button guardar, cargar, borrar, botonHora, botonFecha;
     EditText nombre, edad;
-    TextView textViewHora;
+    TextView textViewHora, textViewFecha;
     static final String NOMBRE_FICHERO = "DATOS";
     static final String NOMBRE = "NOMBRE";
 
@@ -30,7 +31,8 @@ public class MainActivity extends AppCompatActivity implements DialogoHora.Cuand
         borrar = findViewById(R.id.buttonBorrar);
         botonHora = findViewById(R.id.buttonHora);
         textViewHora = findViewById(R.id.textViewHora);
-
+        botonFecha = findViewById(R.id.buttonFecha);
+        textViewFecha = findViewById(R.id.textViewFecha);
 
 
         guardar.setOnClickListener(new View.OnClickListener() {
@@ -70,11 +72,24 @@ public class MainActivity extends AppCompatActivity implements DialogoHora.Cuand
             }
         });
 
+        botonFecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogoFecha dialogoFecha = new DialogoFecha();
+                dialogoFecha.show(getSupportFragmentManager(), "Mi Ventana para Fecha");
+            }
+        });
+
     }
 
     @Override
     public void enSeleccion(GregorianCalendar hora) {
-        textViewHora.setText(hora.get(GregorianCalendar.HOUR)+":"+hora.get(GregorianCalendar.MINUTE));
+        textViewHora.setText(hora.get(GregorianCalendar.HOUR) + ":" + hora.get(GregorianCalendar.MINUTE));
 
+    }
+
+    @Override
+    public void fechaSeleccionada(GregorianCalendar fecha) {
+        textViewFecha.setText(fecha.get(Calendar.DAY_OF_MONTH)+"/"+fecha.get(Calendar.MONTH)+"/"+fecha.get(Calendar.YEAR));
     }
 }
